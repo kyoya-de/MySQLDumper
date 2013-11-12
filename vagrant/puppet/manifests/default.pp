@@ -501,7 +501,11 @@ file { "/srv/msd-dev.local":
     ensure => directory,
 }
 
-file { "/media/msd-dev.local.aufs-data/":
+file { "/media/msd-dev.local.aufs-data":
+    owner => "www-data",
+    group => "vagrant",
+    mode => "ug+rwX,o-w,o+rX",
+    recurse => true,
     ensure => directory,
 }
 
@@ -526,18 +530,17 @@ exec { "Adding auto-mount to rc.local.":
 }
 
 file { "/srv/msd-dev.local/app/cache":
-    owner => "vagrant",
-    group => "www-data",
+    owner => "www-data",
+    group => "vagrant",
     mode => "ug+rwX,o-w,o+rX",
     recurse => true,
     require => Exec["mount /srv/msd-dev.local"],
 }
 
 file { "/srv/msd-dev.local/app/logs":
-    owner => "vagrant",
-    group => "www-data",
+    owner => "www-data",
+    group => "vagrant",
     mode => "ug+rwX,o-w,o+rX",
     recurse => true,
     require => Exec["mount /srv/msd-dev.local"],
 }
-

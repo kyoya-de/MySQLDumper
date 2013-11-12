@@ -1,1 +1,1 @@
-none    /srv/msd-dev.local      aufs    br=/media/msd-dev.local.aufs-data/=rw:/media/msd-dev.local/=ro,udba=reval,noauto        0       0
+none    /srv/msd-dev.local      aufs    br:/media/msd-dev.local.aufs-data/=rw:/media/msd-dev.local/=ro,udba=reval,noauto        0       0
