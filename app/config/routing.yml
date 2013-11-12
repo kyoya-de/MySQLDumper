@@ -1,0 +1,4 @@
+msd_user:
+    resource: "@MSDUserBundle/Resources/config/routing.yml"
+    prefix:   /
+
