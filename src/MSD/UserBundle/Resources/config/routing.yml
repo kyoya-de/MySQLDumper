@@ -1,3 +1,14 @@
 msd_user_homepage:
-    pattern:  /hello/{name}
+    pattern:  /
     defaults: { _controller: MSDUserBundle:Default:index }
+
+login:
+    pattern: /login
+    defaults: { _controller: MSDUserBundle:Default:login }
+
+login_check:
+    pattern: /login_check
+
+msd_user_logout:
+    pattern: /logout
+    defaults: { _controller: MSDUserBundle:Default:logout }
