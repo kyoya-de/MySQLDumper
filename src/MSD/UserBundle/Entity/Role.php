@@ -129,4 +129,14 @@ class Role implements RoleInterface
     {
         $this->users->removeElement($user);
     }
+
+    /**
+     * Get users
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getUsers()
+    {
+        return $this->users;
+    }
 }

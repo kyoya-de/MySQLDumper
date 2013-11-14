@@ -63,6 +63,48 @@ class User implements AdvancedUserInterface, \Serializable
     private $email;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="dbDriver", type="string", length=100)
+     */
+    private $dbDriver;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="dbHost", type="string", length=255)
+     */
+    private $dbHost;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="dbUser", type="string", length=100)
+     */
+    private $dbUser;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="dbPass", type="string", length=100)
+     */
+    private $dbPass;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="dbPort", type="integer")
+     */
+    private $dbPort;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="dbName", type="string", length=255)
+     */
+    private $dbName;
+
+    /**
      * @var Role[]|ArrayCollection
      *
      * @ORM\ManyToMany(targetEntity="Role", inversedBy="users")
@@ -143,7 +185,7 @@ class User implements AdvancedUserInterface, \Serializable
     public function setSalt($salt)
     {
         $this->salt = $salt;
-    
+
         return $this;
     }
 
@@ -345,5 +387,143 @@ class User implements AdvancedUserInterface, \Serializable
     public function unserialize($serialized)
     {
         list ($this->id) = unserialize($serialized);
+    }
+
+    /**
+     * Set dbDriver
+     *
+     * @param string $dbDriver
+     * @return User
+     */
+    public function setDbDriver($dbDriver)
+    {
+        $this->dbDriver = $dbDriver;
+    
+        return $this;
+    }
+
+    /**
+     * Get dbDriver
+     *
+     * @return string 
+     */
+    public function getDbDriver()
+    {
+        return $this->dbDriver;
+    }
+
+    /**
+     * Set dbHost
+     *
+     * @param string $dbHost
+     * @return User
+     */
+    public function setDbHost($dbHost)
+    {
+        $this->dbHost = $dbHost;
+    
+        return $this;
+    }
+
+    /**
+     * Get dbHost
+     *
+     * @return string 
+     */
+    public function getDbHost()
+    {
+        return $this->dbHost;
+    }
+
+    /**
+     * Set dbUser
+     *
+     * @param string $dbUser
+     * @return User
+     */
+    public function setDbUser($dbUser)
+    {
+        $this->dbUser = $dbUser;
+    
+        return $this;
+    }
+
+    /**
+     * Get dbUser
+     *
+     * @return string 
+     */
+    public function getDbUser()
+    {
+        return $this->dbUser;
+    }
+
+    /**
+     * Set dbPass
+     *
+     * @param string $dbPass
+     * @return User
+     */
+    public function setDbPass($dbPass)
+    {
+        $this->dbPass = $dbPass;
+    
+        return $this;
+    }
+
+    /**
+     * Get dbPass
+     *
+     * @return string 
+     */
+    public function getDbPass()
+    {
+        return $this->dbPass;
+    }
+
+    /**
+     * Set dbPort
+     *
+     * @param integer $dbPort
+     * @return User
+     */
+    public function setDbPort($dbPort)
+    {
+        $this->dbPort = $dbPort;
+    
+        return $this;
+    }
+
+    /**
+     * Get dbPort
+     *
+     * @return integer 
+     */
+    public function getDbPort()
+    {
+        return $this->dbPort;
+    }
+
+    /**
+     * Set dbName
+     *
+     * @param string $dbName
+     * @return User
+     */
+    public function setDbName($dbName)
+    {
+        $this->dbName = $dbName;
+    
+        return $this;
+    }
+
+    /**
+     * Get dbName
+     *
+     * @return string 
+     */
+    public function getDbName()
+    {
+        return $this->dbName;
     }
 }

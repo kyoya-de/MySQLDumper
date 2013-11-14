@@ -2,6 +2,7 @@
 
 namespace MSD\UserBundle\Controller;
 
+use MSD\UserBundle\Entity\Manager\FactoryService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Security\Core\SecurityContext;
 
@@ -9,6 +10,11 @@ class DefaultController extends Controller
 {
     public function indexAction()
     {
+        /**
+         * @var FactoryService $emFactory
+         */
+        $emFactory = $this->get('msd.entity_manager_factory');
+        var_dump($emFactory->getManager()->getConnection()->exec('SHOW TABLES'));
         return $this->render('MSDUserBundle:Default:index.html.twig', array('name' => 'lappen'));
     }
 
