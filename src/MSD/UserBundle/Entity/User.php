@@ -3,12 +3,11 @@
 namespace MSD\UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\Role\Role;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\Role\RoleInterface;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * User
@@ -63,58 +62,23 @@ class User implements AdvancedUserInterface, \Serializable
     private $email;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="dbDriver", type="string", length=100)
-     */
-    private $dbDriver;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="dbHost", type="string", length=255)
-     */
-    private $dbHost;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="dbUser", type="string", length=100)
-     */
-    private $dbUser;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="dbPass", type="string", length=100)
-     */
-    private $dbPass;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="dbPort", type="integer")
-     */
-    private $dbPort;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="dbName", type="string", length=255)
-     */
-    private $dbName;
-
-    /**
      * @var Role[]|ArrayCollection
      *
      * @ORM\ManyToMany(targetEntity="Role", inversedBy="users")
      */
     private $roles;
 
+    /**
+     * @var UserDatabase[]|ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="UserDatabase", mappedBy="msdUser")
+     */
+    private $databases;
+
     public function __construct()
     {
         $this->roles = new ArrayCollection();
-        $this->settings = new ArrayCollection();
+        $this->databases = new ArrayCollection();
 
         $this->active = true;
         $this->salt = md5(uniqid(null, true));
@@ -390,140 +354,35 @@ class User implements AdvancedUserInterface, \Serializable
     }
 
     /**
-     * Set dbDriver
+     * Add databases
      *
-     * @param string $dbDriver
+     * @param UserDatabase $databases
      * @return User
      */
-    public function setDbDriver($dbDriver)
+    public function addDatabase(UserDatabase $databases)
     {
-        $this->dbDriver = $dbDriver;
+        $this->databases[] = $databases;
     
         return $this;
     }
 
     /**
-     * Get dbDriver
+     * Remove databases
      *
-     * @return string 
+     * @param UserDatabase $databases
      */
-    public function getDbDriver()
+    public function removeDatabase(UserDatabase $databases)
     {
-        return $this->dbDriver;
+        $this->databases->removeElement($databases);
     }
 
     /**
-     * Set dbHost
+     * Get databases
      *
-     * @param string $dbHost
-     * @return User
+     * @return Collection
      */
-    public function setDbHost($dbHost)
+    public function getDatabases()
     {
-        $this->dbHost = $dbHost;
-    
-        return $this;
-    }
-
-    /**
-     * Get dbHost
-     *
-     * @return string 
-     */
-    public function getDbHost()
-    {
-        return $this->dbHost;
-    }
-
-    /**
-     * Set dbUser
-     *
-     * @param string $dbUser
-     * @return User
-     */
-    public function setDbUser($dbUser)
-    {
-        $this->dbUser = $dbUser;
-    
-        return $this;
-    }
-
-    /**
-     * Get dbUser
-     *
-     * @return string 
-     */
-    public function getDbUser()
-    {
-        return $this->dbUser;
-    }
-
-    /**
-     * Set dbPass
-     *
-     * @param string $dbPass
-     * @return User
-     */
-    public function setDbPass($dbPass)
-    {
-        $this->dbPass = $dbPass;
-    
-        return $this;
-    }
-
-    /**
-     * Get dbPass
-     *
-     * @return string 
-     */
-    public function getDbPass()
-    {
-        return $this->dbPass;
-    }
-
-    /**
-     * Set dbPort
-     *
-     * @param integer $dbPort
-     * @return User
-     */
-    public function setDbPort($dbPort)
-    {
-        $this->dbPort = $dbPort;
-    
-        return $this;
-    }
-
-    /**
-     * Get dbPort
-     *
-     * @return integer 
-     */
-    public function getDbPort()
-    {
-        return $this->dbPort;
-    }
-
-    /**
-     * Set dbName
-     *
-     * @param string $dbName
-     * @return User
-     */
-    public function setDbName($dbName)
-    {
-        $this->dbName = $dbName;
-    
-        return $this;
-    }
-
-    /**
-     * Get dbName
-     *
-     * @return string 
-     */
-    public function getDbName()
-    {
-        return $this->dbName;
+        return $this->databases;
     }
 }

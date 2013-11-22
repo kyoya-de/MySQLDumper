@@ -2,22 +2,27 @@
 
 namespace MSD\UserBundle\Controller;
 
-use MSD\UserBundle\Entity\Manager\FactoryService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Security\Core\SecurityContext;
 
+/**
+ * Class DefaultController
+ *
+ * @package MSD\UserBundle\Controller
+ */
 class DefaultController extends Controller
 {
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function indexAction()
     {
-        /**
-         * @var FactoryService $emFactory
-         */
-        $emFactory = $this->get('msd.entity_manager_factory');
-        var_dump($emFactory->getManager()->getConnection()->exec('SHOW TABLES'));
         return $this->render('MSDUserBundle:Default:index.html.twig', array('name' => 'lappen'));
     }
 
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function loginAction()
     {
         $request = $this->getRequest();
@@ -43,6 +48,9 @@ class DefaultController extends Controller
         );
     }
 
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function logoutAction()
     {
         return $this->render('MSDUserBundle::logout.html.twig');

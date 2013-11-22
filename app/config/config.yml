@@ -30,7 +30,7 @@ twig:
 assetic:
     debug:          %kernel.debug%
     use_controller: false
-    bundles:        [ ]
+    bundles:        [ MSDCoreBundle ]
     #java: /usr/bin/java
     filters:
         cssrewrite: ~
@@ -42,10 +42,15 @@ assetic:
 # Doctrine Configuration
 doctrine:
     dbal:
-        driver:   %management_db_driver%
-        user:     %management_db_user%
-        password: %management_db_password%
-        path:     %management_db_path%
+        driver:      %management_db_driver%
+        user:        %management_db_user%
+        password:    %management_db_password%
+        host:        %management_db_host%
+        port:        %management_db_port%
+        dbname:      %management_db_name%
+        unix_socket: %management_db_unix_socket%
+        charset:     %management_db_charset%
+        path:        %management_db_path%
         # if using pdo_sqlite as your database driver, add the path in parameters.yml
         # e.g. database_path: %kernel.root_dir%/data/data.db3
         # path:     %database_path%

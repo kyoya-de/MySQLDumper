@@ -1,0 +1,8 @@
+<div class="form-group">
+    <label for="dbSelect">{% trans %}Select a DB{% endtrans %}:</label>
+    <select class="form-control" id="dbSelect">
+        {% for database in databases %}
+        <option value="{{ database }}">{{ database }}</option>
+        {% endfor %}
+    </select>
+</div>

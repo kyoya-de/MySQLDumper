@@ -1,0 +1,17 @@
+parameters:
+#    msd_core.example.class: MSD\CoreBundle\Example
+    msd.db_connection.class: MSD\CoreBundle\Database\Connection\FactoryService
+    msd.twig.menu_builder_extension.class: MSD\CoreBundle\Twig\Extension\MenuBuilder
+
+services:
+#    msd_core.example:
+#        class: %msd_core.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]
+    msd.db_connection:
+        class: %msd.db_connection.class%
+        arguments: [ @service_container ]
+    msd.twig.menu_builder_extension:
+        class: %msd.twig.menu_builder_extension.class%
+        arguments: [ @msd.db_connection, @service_container ]
+        tags:
+            - { name: twig.extension }

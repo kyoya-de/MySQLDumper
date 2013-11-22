@@ -1,0 +1,1 @@
+INSERT INTO `UserDatabase` (`id`, `driver`, `user`, `password`, `host`, `port`, `unixSocket`, `path`, `dbName`, `charset`, `msdUser_id`) VALUES (1, 'pdo_mysql', 'msd-dev', 'msd', 'localhost', 0, '', '', 'msd-dev', 'UTF8', 1);
