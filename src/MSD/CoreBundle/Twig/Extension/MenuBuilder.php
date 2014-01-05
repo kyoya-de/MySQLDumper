@@ -2,11 +2,12 @@
 
 namespace MSD\CoreBundle\Twig\Extension;
 
-use MSD\CoreBundle\Database\Connection\FactoryService;
 use Symfony\Bundle\TwigBundle\TwigEngine;
+use Symfony\Component\DependencyInjection\Container;
+use Doctrine\DBAL\Connection;
+use MSD\CoreBundle\Database\Connection\FactoryService;
 use Twig_Extension;
 use Twig_SimpleFunction;
-use Symfony\Component\DependencyInjection\Container;
 
 /**
  * Class MenuBuilder
@@ -16,7 +17,7 @@ use Symfony\Component\DependencyInjection\Container;
 class MenuBuilder extends Twig_Extension
 {
     /**
-     * @var FactoryService
+     * @var Connection
      */
     private $dbService;
 
@@ -31,10 +32,10 @@ class MenuBuilder extends Twig_Extension
     private $engine;
 
     /**
-     * @param FactoryService $dbConnection
-     * @param Container      $container
+     * @param Connection $dbConnection
+     * @param Container  $container
      */
-    public function __construct(FactoryService $dbConnection, Container $container)
+    public function __construct(Connection $dbConnection, Container $container)
     {
         $this->container = $container;
         $this->dbService = $dbConnection;
@@ -55,7 +56,7 @@ class MenuBuilder extends Twig_Extension
      */
     public function buildMenu()
     {
-        if (!$this->dbService->getConnection()) {
+        if (!$this->dbService) {
             return '&nbsp;';
         }
 
@@ -67,7 +68,7 @@ class MenuBuilder extends Twig_Extension
      */
     public function buildTablesSelect()
     {
-        $tables = $this->dbService->getConnection()->getSchemaManager()->listTableNames();
+        $tables = $this->dbService->getSchemaManager()->listTableNames();
         $engine = $this->getEngine();
 
         return $engine->render(
@@ -81,7 +82,7 @@ class MenuBuilder extends Twig_Extension
      */
     public function buildDbSelect()
     {
-        $databases = $this->dbService->getConnection()->getSchemaManager()->listDatabases();
+        $databases = $this->dbService->getSchemaManager()->listDatabases();
         $templating = $this->getEngine();
 
         return $templating->render('MSDCoreBundle:Menu:databases.html.twig', array('databases' => $databases));
