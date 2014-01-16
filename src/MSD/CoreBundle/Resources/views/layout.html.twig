@@ -2,22 +2,29 @@
 <html>
 <head>
     <title>{% block pageTitle %}MySQLDumper Version 2.0.0{% endblock %}</title>
-    {% stylesheets '@MSDCoreBundle/Resources/public/css/bootstrap.css' %}
+    {% stylesheets '@MSDCoreBundle/Resources/public/css/*.min.css' %}
     <link rel="stylesheet" type="text/css" href="{{ asset_url }}">
     {% endstylesheets %}
-
+    {% javascripts '@MSDCoreBundle/Resources/public/js/jquery-2.0.3.min.js' %}
+    <script src="{{ asset_url }}" type="text/javascript"></script>
+    {% endjavascripts %}
+    {% javascripts '@MSDCoreBundle/Resources/public/js/bootstrap.min.js' %}
+    <script src="{{ asset_url }}" type="text/javascript"></script>
+    {% endjavascripts %}
 </head>
+
 <body>
 
+<nav class="navbar navbar-default navbar-static-top" role="navigation">
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <ul class="nav navbar-nav">
+        <li class="navbar-brand">MSD</li>
+        {{ buildMenu() }}
+    </ul>
+</nav>
+
 <div class="container">
-    <div class="row">
-        <div class="col-lg-2">
-            {{ buildMenu() }}
-        </div>
-        <div class="col-lg-10">
-            {% block content %}{% endblock %}
-        </div>
-    </div>
+    {% block content %}{% endblock %}
 </div>
 
 </body>

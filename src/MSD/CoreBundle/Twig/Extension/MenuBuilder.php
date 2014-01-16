@@ -72,13 +72,17 @@ class MenuBuilder extends Twig_Extension
         /**
          * TODO: System-Views are hidden. Create a database management helper class or
          */
-        $tables = $this->dbService->getSchemaManager()->listTableNames();
-        $views = $this->dbService->getSchemaManager()->listTables();
+        $tables['tables'] = $this->dbService->getSchemaManager()->listTableNames();
+        $tables['views'] = $this->dbService->getSchemaManager()->listViews();
+
+        sort($tables['tables']);
+        sort($tables['views']);
+
         $engine = $this->getEngine();
 
         return $engine->render(
             'MSDCoreBundle:Menu:tables.html.twig',
-            array('tables' => $tables)
+            array('tables' => $tables, 'currentTable' => null)
         );
     }
 

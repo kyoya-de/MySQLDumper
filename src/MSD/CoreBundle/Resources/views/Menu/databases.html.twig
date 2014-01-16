@@ -1,21 +1,23 @@
-<form action="{{ path('msd_user_homepage') }}" method="post">
-    <div class="form-group">
-        <label for="dbSelect">{% trans %}Select a Connection{% endtrans %}:</label>
-        <select class="form-control" id="connectionSelect" name="_connection" onchange="form.submit();">
-            {% for connection in connections %}
-                <option value="{{ connection.id }}"{% if connection.id == currentConnection.id %} selected="selected"{% endif %}>{{ connection.host }}</option>
-            {% endfor %}
-        </select>
-    </div>
-</form>
+<li class="dropdown">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% if currentConnection.id %}{{ currentConnection.host }}{% else %}{% trans %}Select connection{% endtrans %}{% endif %} <b class="caret"></b></a>
+    <ul class="dropdown-menu">
+        <li role="presentation" class="dropdown-header">{% trans %}Connections{% endtrans %}</li>
+        {% for connection in connections %}
+            <li role="presentation"{% if connection.id == currentConnection.id %} class="active"{% endif %}><a role="menuitem" href="{{ path(app.request.attributes.get('_route')) }}?_connection={{ connection.id }}">{{ connection.host }}</a></li>
+        {% else %}
+            <li role="presentation" class="disabled"><a role="menuitem" tabindex="-1" href="#">{% trans %}No connections found{% endtrans %}</a></li>
+        {% endfor %}
+    </ul>
+</li>
 
-<form action="{{ path('msd_user_homepage') }}" method="post">
-    <div class="form-group">
-        <label for="dbSelect">{% trans %}Select a Database{% endtrans %}:</label>
-        <select class="form-control" id="dbSelect" name="_dbName" onchange="form.submit();">
-            {% for database in databases %}
-                <option value="{{ database }}"{% if database == currentDatabase %} selected="selected"{% endif %}>{{ database }}</option>
-            {% endfor %}
-        </select>
-    </div>
-</form>
+<li class="dropdown">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% if currentDatabase %}{{ currentDatabase }}{% else %}{% trans %}Select database{% endtrans %}{% endif %} <b class="caret"></b></a>
+    <ul class="dropdown-menu">
+        <li role="presentation" class="dropdown-header">{% trans %}Databases{% endtrans %}</li>
+        {% for database in databases %}
+            <li role="presentation"{% if database == currentDatabase %} class="active"{% endif %}><a role="menuitem" href="{{ path(app.request.attributes.get('_route')) }}?_dbName={{ database }}">{{ database }}</a></li>
+        {% else %}
+            <li role="presentation" class="disabled"><a role="menuitem" tabindex="-1" href="#">{% trans %}No databases found{% endtrans %}</a></li>
+        {% endfor %}
+    </ul>
+</li>
