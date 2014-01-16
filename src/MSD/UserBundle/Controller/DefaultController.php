@@ -17,7 +17,7 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        return $this->render('MSDUserBundle:Default:index.html.twig', array('name' => 'lappen'));
+        return $this->render('MSDUserBundle:Default:index.html.twig', array('name' => 'world'));
     }
 
     /**

@@ -95,7 +95,7 @@ class UserDatabase
     /**
      * @var integer
      *
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="database")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="databases")
      */
     private $msdUser;
 

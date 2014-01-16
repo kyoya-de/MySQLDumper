@@ -4,8 +4,9 @@ namespace MSD\CoreBundle\Twig\Extension;
 
 use Symfony\Bundle\TwigBundle\TwigEngine;
 use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\Security\Core\SecurityContext;
 use Doctrine\DBAL\Connection;
-use MSD\CoreBundle\Database\Connection\FactoryService;
+use MSD\UserBundle\Entity\User;
 use Twig_Extension;
 use Twig_SimpleFunction;
 
@@ -32,13 +33,11 @@ class MenuBuilder extends Twig_Extension
     private $engine;
 
     /**
-     * @param Connection $dbConnection
-     * @param Container  $container
+     * @param Container $container
      */
-    public function __construct(Connection $dbConnection, Container $container)
+    public function __construct(Container $container)
     {
         $this->container = $container;
-        $this->dbService = $dbConnection;
     }
 
     /**
@@ -56,7 +55,9 @@ class MenuBuilder extends Twig_Extension
      */
     public function buildMenu()
     {
+        $this->dbService = $this->container->get('msd.db_connection');
         if (!$this->dbService) {
+
             return '&nbsp;';
         }
 
@@ -68,7 +69,11 @@ class MenuBuilder extends Twig_Extension
      */
     public function buildTablesSelect()
     {
+        /**
+         * TODO: System-Views are hidden. Create a database management helper class or
+         */
         $tables = $this->dbService->getSchemaManager()->listTableNames();
+        $views = $this->dbService->getSchemaManager()->listTables();
         $engine = $this->getEngine();
 
         return $engine->render(
@@ -82,10 +87,20 @@ class MenuBuilder extends Twig_Extension
      */
     public function buildDbSelect()
     {
-        $databases = $this->dbService->getSchemaManager()->listDatabases();
+        /** @var User $user */
+        $user = $this->container->get('security.context')->getToken()->getUser();
+
         $templating = $this->getEngine();
 
-        return $templating->render('MSDCoreBundle:Menu:databases.html.twig', array('databases' => $databases));
+        return $templating->render(
+            'MSDCoreBundle:Menu:databases.html.twig',
+            array(
+                 'connections' => $user->getDatabases(),
+                 'databases' => $this->dbService->getSchemaManager()->listDatabases(),
+                 'currentConnection' => $user->getCurrentConnection(),
+                 'currentDatabase' => $this->dbService->getDatabase(),
+            )
+        );
     }
 
     /**

@@ -15,6 +15,6 @@ services:
         arguments: [ @service_container ]
     msd.twig.menu_builder_extension:
         class: %msd.twig.menu_builder_extension.class%
-        arguments: [ @msd.db_connection, @service_container ]
+        arguments: [ @service_container ]
         tags:
             - { name: twig.extension }

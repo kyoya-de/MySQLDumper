@@ -1,8 +1,21 @@
-<div class="form-group">
-    <label for="dbSelect">{% trans %}Select a DB{% endtrans %}:</label>
-    <select class="form-control" id="dbSelect">
-        {% for database in databases %}
-        <option value="{{ database }}">{{ database }}</option>
-        {% endfor %}
-    </select>
-</div>
+<form action="{{ path('msd_user_homepage') }}" method="post">
+    <div class="form-group">
+        <label for="dbSelect">{% trans %}Select a Connection{% endtrans %}:</label>
+        <select class="form-control" id="connectionSelect" name="_connection" onchange="form.submit();">
+            {% for connection in connections %}
+                <option value="{{ connection.id }}"{% if connection.id == currentConnection.id %} selected="selected"{% endif %}>{{ connection.host }}</option>
+            {% endfor %}
+        </select>
+    </div>
+</form>
+
+<form action="{{ path('msd_user_homepage') }}" method="post">
+    <div class="form-group">
+        <label for="dbSelect">{% trans %}Select a Database{% endtrans %}:</label>
+        <select class="form-control" id="dbSelect" name="_dbName" onchange="form.submit();">
+            {% for database in databases %}
+                <option value="{{ database }}"{% if database == currentDatabase %} selected="selected"{% endif %}>{{ database }}</option>
+            {% endfor %}
+        </select>
+    </div>
+</form>

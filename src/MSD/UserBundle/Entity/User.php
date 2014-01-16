@@ -75,6 +75,14 @@ class User implements AdvancedUserInterface, \Serializable
      */
     private $databases;
 
+    /**
+     * @var UserDatabase
+     *
+     * @ORM\OneToOne(targetEntity="UserDatabase")
+     * @ORM\JoinColumn(name="current_connection", referencedColumnName="id", nullable=true)
+     */
+    private $currentConnection;
+
     public function __construct()
     {
         $this->roles = new ArrayCollection();
@@ -384,5 +392,28 @@ class User implements AdvancedUserInterface, \Serializable
     public function getDatabases()
     {
         return $this->databases;
+    }
+
+    /**
+     * Set currentConnection
+     *
+     * @param UserDatabase $currentConnection
+     * @return User
+     */
+    public function setCurrentConnection(UserDatabase $currentConnection = null)
+    {
+        $this->currentConnection = $currentConnection;
+    
+        return $this;
+    }
+
+    /**
+     * Get currentConnection
+     *
+     * @return \MSD\UserBundle\Entity\UserDatabase 
+     */
+    public function getCurrentConnection()
+    {
+        return $this->currentConnection;
     }
 }
