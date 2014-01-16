@@ -7,12 +7,10 @@ exec { "user-db-structure":
 
 exec { "user-db-data":
     command => "sqlite3 /srv/msd-dev.local/app/data/users.sq3 < /srv/msd-dev.local/docs/data.sql",
-    unless => "test -s /srv/msd-dev.local/app/data/users.sq3",
     require => Exec["user-db-structure"]
 }
 
 exec { "user-db-data_dev":
     command => "sqlite3 /srv/msd-dev.local/app/data/users.sq3 < /srv/msd-dev.local/docs/data_dev.sql",
-    unless => "test -s /srv/msd-dev.local/app/data/users.sq3",
     require => Exec["user-db-data"]
 }
