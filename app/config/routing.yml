@@ -1,4 +1,14 @@
+msd_admin:
+    resource: "@MSDAdminBundle/Resources/config/routing.yml"
+    prefix:   /admin
+
 msd_user:
     resource: "@MSDUserBundle/Resources/config/routing.yml"
     prefix:   /
 
+msd_core:
+    resource: "@MSDCoreBundle/Resources/config/routing.yml"
+    prefix:   /{_locale}
+    requirements:
+        _locale: en|de
+    defaults: { _locale: "en" }

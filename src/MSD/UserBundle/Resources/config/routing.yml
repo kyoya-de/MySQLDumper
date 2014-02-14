@@ -9,6 +9,6 @@ login:
 login_check:
     pattern: /login_check
 
-msd_user_logout:
+logout:
     pattern: /logout
     defaults: { _controller: MSDUserBundle:Default:logout }

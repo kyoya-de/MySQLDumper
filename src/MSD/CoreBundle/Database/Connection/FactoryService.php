@@ -7,11 +7,12 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Security\Core\SecurityContext;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Doctrine\Common\Collections\Collection;
 
 use MSD\UserBundle\Entity\User;
 use MSD\UserBundle\Entity\UserDatabase;
+use MSD\CoreBundle\Database\Connection\NotFoundException;
 use MSD\CoreBundle\Doctrine\DBAL\Platforms\MySqlPlatform;
 
 /**
@@ -22,6 +23,11 @@ use MSD\CoreBundle\Doctrine\DBAL\Platforms\MySqlPlatform;
 class FactoryService
 {
     /**
+     * @var User
+     */
+    protected $user;
+
+    /**
      * @param Container $container
      *
      * @return Connection
@@ -30,41 +36,36 @@ class FactoryService
     {
         /**
          * @var UserDatabase $database
-         * @var UserDatabase $db
          * @var User $user
          * @var SecurityContext $securityContext
-         * @var Request $request
          * @var Session $session
+         * @var Collection|UserDatabase[] $connections
          */
         $securityContext = $container->get('security.context');
         if (!($token = $securityContext->getToken())) {
             return null;
         }
         $user = $token->getUser();
-
-        $database = $user->getCurrentConnection();
-        if (null !== ($requestDatabaseId = $container->get('request')->get('_connection'))) {
-            foreach ($user->getDatabases() as $db) {
-                if ($requestDatabaseId == $db->getId()) {
-                    $database = $db;
-                    $user->setCurrentConnection($database);
-                    $em = $container->get('doctrine')->getManager();
-                    $em->persist($user);
-                    $em->flush();
+        $session = $container->get('session');
+        $connections = $user->getDatabases();
+        if (null !== ($connectionId = $session->get('connection.current'))) {
+            $database = false;
+            foreach ($connections as $userConnection) {
+                if ($userConnection->getId() == $connectionId) {
+                    $database = $userConnection;
+                    break;
                 }
             }
+        } else {
+            $database = $connections->get(0);
         }
 
-        $session = $container->get('session');
-        if (null !== ($requestDbName = $container->get('request')->get('_dbName'))) {
-            $session->set('_dbName', $requestDbName);
+        if (!$database) {
+            throw new NotFoundException('Unknown connection ID!');
         }
-
-        $database->setDbName($session->get('_dbName'));
 
         $connection = array(
             'driver' => $database->getDriver(),
-            'platform' => new MySqlPlatform(),
         );
 
         if ($database->getUser() != '') {
@@ -84,7 +85,7 @@ class FactoryService
         }
 
         if ($database->getDbName() != '') {
-            $connection['dbname'] = $database->getDbName();
+            $connection['dbname'] = $session->get('database.current', $database->getDbName());
         }
         if ($database->getUnixSocket() != '') {
             $connection['unix_socket'] = $database->getUnixSocket();
@@ -101,6 +102,8 @@ class FactoryService
         if ($database->getDriverOptions()->count() > 0) {
             $connection['driverOptions'] = $database->getDriverOptions()->toArray();
         }
+
+        $connection['platform'] = new MySqlPlatform();
 
         return DriverManager::getConnection($connection, new Configuration());
     }

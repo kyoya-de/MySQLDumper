@@ -18,3 +18,21 @@ services:
         arguments: [ @service_container ]
         tags:
             - { name: twig.extension }
+    kernel.listener.msd_request_change_connection:
+        class: MSD\CoreBundle\EventListener\RequestEventListener
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: changeConnection }
+        calls:
+            - [setContainer, ["@service_container"]]
+    kernel.listener.msd_request_change_db:
+        class: MSD\CoreBundle\EventListener\RequestEventListener
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: changeDatabase }
+        calls:
+            - [setContainer, ["@service_container"]]
+    kernel.listener.msd_request_change_table:
+        class: MSD\CoreBundle\EventListener\RequestEventListener
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: changeTable }
+        calls:
+            - [setContainer, ["@service_container"]]

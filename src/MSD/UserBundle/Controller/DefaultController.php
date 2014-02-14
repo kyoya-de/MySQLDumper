@@ -4,6 +4,8 @@ namespace MSD\UserBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Security\Core\SecurityContext;
+use MSD\UserBundle\Entity\User;
+use MSD\UserBundle\Form\Settings\UserType;
 
 /**
  * Class DefaultController
@@ -17,7 +19,11 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        return $this->render('MSDUserBundle:Default:index.html.twig', array('name' => 'world'));
+        /** @var User $user */
+        $user = $this->get('security.context')->getToken()->getUser();
+//        $u = new UserType();
+        $form = $this->createForm('msd_user', $user);
+        return $this->render('MSDUserBundle:Default:index.html.twig', array('form' => $form->createView()));
     }
 
     /**

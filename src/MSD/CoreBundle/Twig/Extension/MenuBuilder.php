@@ -4,8 +4,10 @@ namespace MSD\CoreBundle\Twig\Extension;
 
 use Symfony\Bundle\TwigBundle\TwigEngine;
 use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\Process\Process;
 use Symfony\Component\Security\Core\SecurityContext;
 use Doctrine\DBAL\Connection;
+use MSD\CoreBundle\Database\Connection\FactoryService;
 use MSD\UserBundle\Entity\User;
 use Twig_Extension;
 use Twig_SimpleFunction;
@@ -33,11 +35,12 @@ class MenuBuilder extends Twig_Extension
     private $engine;
 
     /**
-     * @param Container $container
+     * @param Container  $container
      */
     public function __construct(Container $container)
     {
         $this->container = $container;
+        $this->dbService = $container->get('msd.db_connection');
     }
 
     /**
@@ -55,56 +58,84 @@ class MenuBuilder extends Twig_Extension
      */
     public function buildMenu()
     {
-        $this->dbService = $this->container->get('msd.db_connection');
         if (!$this->dbService) {
-
             return '&nbsp;';
         }
 
-        return $this->buildDbSelect() . $this->buildTablesSelect();
-    }
-
-    /**
-     * @return string
-     */
-    public function buildTablesSelect()
-    {
-        /**
-         * TODO: System-Views are hidden. Create a database management helper class or
-         */
-        $tables['tables'] = $this->dbService->getSchemaManager()->listTableNames();
-        $tables['views'] = $this->dbService->getSchemaManager()->listViews();
-
-        sort($tables['tables']);
-        sort($tables['views']);
-
-        $engine = $this->getEngine();
-
-        return $engine->render(
-            'MSDCoreBundle:Menu:tables.html.twig',
-            array('tables' => $tables, 'currentTable' => null)
-        );
-    }
-
-    /**
-     * @return string
-     */
-    public function buildDbSelect()
-    {
-        /** @var User $user */
-        $user = $this->container->get('security.context')->getToken()->getUser();
-
-        $templating = $this->getEngine();
-
-        return $templating->render(
-            'MSDCoreBundle:Menu:databases.html.twig',
+        return $this->getEngine()->render(
+            'MSDCoreBundle:Menu:layout.html.twig',
             array(
-                 'connections' => $user->getDatabases(),
-                 'databases' => $this->dbService->getSchemaManager()->listDatabases(),
-                 'currentConnection' => $user->getCurrentConnection(),
-                 'currentDatabase' => $this->dbService->getDatabase(),
+                'connections' => $this->getConnections(),
+                'currentConnection' => $this->getCurrentConnection(),
+
+                'databases' => $this->getDatabases('sort'),
+                'currentDatabase' => $this->getCurrentDatabase(),
+
+                'tables' => $this->getTables('sort'),
+                'currentTable' => $this->getCurrentTable(),
             )
         );
+    }
+
+    /**
+     * @param Callable $sortCallback
+     *
+     * @return string
+     */
+    protected function getTables($sortCallback = null)
+    {
+        $tables = $this->dbService->getSchemaManager()->listTableNames();
+
+        if (is_callable($sortCallback)) {
+            call_user_func_array($sortCallback, array(&$tables));
+        }
+
+        return $tables;
+    }
+
+    /**
+     * @param Callable $sortCallback
+     *
+     * @return string
+     */
+    protected function getDatabases($sortCallback = null)
+    {
+        $databases = $this->dbService->getSchemaManager()->listDatabases();
+
+        if (is_callable($sortCallback)) {
+            call_user_func_array($sortCallback, array(&$databases));
+        }
+
+        return $databases;
+    }
+
+    protected function getConnections()
+    {
+        /**
+         * @var SecurityContext $securityContext
+         * @var User $user
+         */
+        $securityContext = $this->container->get('security.context');
+        $user = $securityContext->getToken()->getUser();
+
+        return $user->getDatabases();
+    }
+
+    public function getCurrentConnection()
+    {
+        $session = $this->container->get('session');
+        return $session->get('connection.current', 0);
+    }
+
+    protected function getCurrentDatabase()
+    {
+        return $this->dbService->query('SELECT DATABASE()')->fetchColumn();
+    }
+
+    public function getCurrentTable()
+    {
+        $session = $this->container->get('session');
+        return $session->get('table.current');
     }
 
     /**
