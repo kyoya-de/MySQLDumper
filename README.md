@@ -16,6 +16,6 @@ Setup development environment
 
 Links
 =====
-Virtualbox: https://www.virtualbox.org/
-Vagrant: http://www.vagrantup.com/
-Composer: https://getcomposer.org/
+- Virtualbox: https://www.virtualbox.org/
+- Vagrant: http://www.vagrantup.com/
+- Composer: https://getcomposer.org/
