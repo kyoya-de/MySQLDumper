@@ -299,6 +299,19 @@ class User implements AdvancedUserInterface, \Serializable
     }
 
     /**
+     * @return array
+     */
+    public function getRoleIds()
+    {
+        $roleIds = array();
+        foreach ($this->roles as $role) {
+            $roleIds[] = $role->getId();
+        }
+
+        return $roleIds;
+    }
+
+    /**
      * Removes sensitive data from the user.
      *
      * This is important if, at any given point, sensitive information like

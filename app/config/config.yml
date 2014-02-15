@@ -30,7 +30,7 @@ twig:
 assetic:
     debug:          %kernel.debug%
     use_controller: false
-    bundles:        [ MSDCoreBundle ]
+    bundles:        [ MSDCoreBundle, MSDUserBundle ]
     #java: /usr/bin/java
     filters:
         cssrewrite: ~
@@ -43,6 +43,7 @@ assetic:
             inputs:
                 - '@MSDCoreBundle/Resources/public/js/jquery-2.0.3.min.js'
                 - '@MSDCoreBundle/Resources/public/js/bootstrap.min.js'
+                - '@MSDCoreBundle/Resources/public/js/bootbox.js'
         main_stylesheets:
             inputs:
                 - '@MSDCoreBundle/Resources/public/css/bootstrap.css'

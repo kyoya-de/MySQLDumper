@@ -2,24 +2,21 @@
 <html>
 <head>
     <title>{% block pageTitle %}MySQLDumper Version 2.0.0{% endblock %}</title>
+    {% block stylesheets %}
     {% stylesheets '@main_stylesheets' %}
     <link rel="stylesheet" type="text/css" href="{{ asset_url }}">
     {% endstylesheets %}
+    {% endblock %}
+    {% block javascripts %}
     {% javascripts '@main_javascripts' %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
+    {% endblock %}
 </head>
 
 <body>
 
 {{ buildMenu() }}
-<div class="container">
-    <div class="row">
-        <div class="col-lg-12">
-            {% block content %}{% endblock %}
-        </div>
-    </div>
-</div>
-
+    {% block content %}{% endblock %}
 </body>
 </html>

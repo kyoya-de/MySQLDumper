@@ -1,1 +1,171 @@
-Hello {{ name }}!
+{% extends "MSDCoreBundle::layout.html.twig" %}
+{% block content %}
+<div class="container">
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <tr>
+                <th>{% trans %}ID{% endtrans %}</th>
+                <th>{% trans %}Active{% endtrans %}</th>
+                <th>{% trans %}Username{% endtrans %}</th>
+                <th>{% trans %}E-Mail{% endtrans %}</th>
+                <th>{% trans %}Role{% endtrans %}</th>
+                <th>{% trans %}Action{% endtrans %}</th>
+            </tr>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>
+                        {% if user.active %}
+                            <span class="label label-success"><span class="glyphicon glyphicon-ok"></span></span>
+                        {% else %}
+                            <span class="label label-danger"><span class="glyphicon glyphicon-remove"></span></span>
+                        {% endif %}
+                    </td>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{% for role in user.roles %}
+                            <span class="label label-{% if role.id == 1 %}warning{% else %}success{% endif %}">{{ role.name|trans }}</span>{% endfor %}
+                    </td>
+                    <td>
+                        {% if app.user.id != user.id %}
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default">
+                                <span class="glyphicon glyphicon-pencil"></span> {% trans %}Edit profile{% endtrans %}
+                            </button>
+                            <button type="button" class="btn btn-default" onclick="openAjaxDialog('{{ path('msd_admin_user_manage_roles', {'userId': user.id}) }}', '{% trans %}Set user roles{% endtrans %}');">
+                                <span class="glyphicon glyphicon-th-large"></span> {% trans %}Manage roles{% endtrans %}
+                            </button>
+                            <button type="button" class="btn btn-default" onclick="openAjaxDialog('{{ path('msd_admin_user_manage_connections', {'userId': user.id}) }}', '{% trans %}Manage database connections{% endtrans %}', '{{ path('msd_admin_user_manage_connections', {'userId': user.id}) }}');">
+                                <span class="glyphicon glyphicon-tasks"></span>
+                                {% trans %}Manage connections{% endtrans %}
+                            </button>
+
+                            {% if user.active %}
+                                <button type="button" class="btn btn-default" onclick="confirmLock('{{ path('msd_admin_user_lock', { 'userId': user.id}) }}');">
+                                    <span class="glyphicon glyphicon-lock"></span> {% trans %}Lock{% endtrans %}
+                                </button>
+                            {% else %}
+                                <button type="button" class="btn btn-default" onclick="confirmUnlock('{{ path('msd_admin_user_unlock', { 'userId': user.id}) }}');">
+                                    <span class="glyphicon"></span> {% trans %}Unlock{% endtrans %}
+                                </button>
+                            {% endif %}
+                            <button type="button" class="btn btn-danger" onclick="confirmDeletion('{{ path('msd_admin_user_delete', { 'userId': user.id}) }}');">
+                                <span class="glyphicon glyphicon-trash"></span> {% trans %}Delete user{% endtrans %}
+                            </button>
+                        </div>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+    <script type="text/javascript">
+        function confirmDeletion(url) {
+            bootbox.dialog({
+                "message": "{% trans %}You're about to delete the selected user.{% endtrans %}",
+                "title": "{% trans %}Are you sure?{% endtrans %}",
+                "buttons": {
+                    "cancel": {
+                        "label": "{% trans %}Cacnel{% endtrans %}",
+                        "className": "btn-default"
+                    },
+                    "lock": {
+                        "label": "{% trans %}Delete{% endtrans %}",
+                        "className": "btn-danger",
+                        "callback": function () {
+                            window.location.href = url;
+                        }
+                    }
+                }
+            });
+
+            return false;
+        }
+        function confirmLock(url) {
+            bootbox.dialog({
+                "message": "{% trans %}You're about to lock the selected user.{% endtrans %}",
+                "title": "{% trans %}Are you sure?{% endtrans %}",
+                "buttons": {
+                    "cancel": {
+                        "label": "{% trans %}Cacnel{% endtrans %}",
+                        "className": "btn-default"
+                    },
+                    "lock": {
+                        "label": "{% trans %}Lock{% endtrans %}",
+                        "className": "btn-primary",
+                        "callback": function () {
+                            window.location.href = url;
+                        }
+                    }
+                }
+            });
+
+            return false;
+        }
+        function confirmUnlock(url) {
+            bootbox.dialog({
+                "message": "{% trans %}You're about to unlock the selected user.{% endtrans %}",
+                "title": "{% trans %}Are you sure?{% endtrans %}",
+                "buttons": {
+                    "cancel": {
+                        "label": "{% trans %}Cacnel{% endtrans %}",
+                        "className": "btn-default"
+                    },
+                    "lock": {
+                        "label": "{% trans %}Unlock{% endtrans %}",
+                        "className": "btn-primary",
+                        "callback": function () {
+                            window.location.href = url;
+                        }
+                    }
+                }
+            });
+
+            return false;
+        }
+        function openAjaxDialog(formUrl, title, addItemUrl)
+        {
+            var $overlay = $('<div class="modal-backdrop fade in" style="display:none;z-index:1040;"><\/div>'),
+                $loaderImg = $('<div class="modal fade in" style="width:100px;margin:40px auto;display:none;overflow:hidden;"><img src="{{ asset('bundles/msdcore/images/ajax-loader-loading-big.gif') }}"></div>');
+            $overlay.appendTo('body').fadeIn();
+            $loaderImg.appendTo('body').fadeIn();
+            var defaultButtons = {
+                cancel:{
+                    label:"{% trans %}Cancel{% endtrans %}"
+                },
+                save:{
+                    label:'<span class="glyphicon glyphicon-floppy-disk"></span> {% trans %}Save{% endtrans %}',
+                    className:"btn-danger",
+                    "callback":function(){
+                        $('#rolesForm').submit();
+                    }
+                }
+            };
+            var buttons = {};
+            if (addItemUrl) {
+                var addButton = {
+                    addItem:{
+                        label:'<span class="glyphicon glyphicon-asterisk"></span> {% trans %}New{% endtrans %}',
+                        className:"btn-primary pull-left",
+                        "callback":function(){window.location.href = addItemUrl; }
+                    }
+                };
+                $.extend(buttons, addButton);
+            }
+            $.extend(buttons, defaultButtons);
+            $.ajax({
+                url:formUrl,
+                success:function(response) {
+                    $overlay.remove();
+                    $loaderImg.remove();
+                    bootbox.dialog({
+                        message:response,
+                        title:title,
+                        buttons:buttons
+                    });
+                }
+            });
+        }
+    </script>
+{% endblock %}

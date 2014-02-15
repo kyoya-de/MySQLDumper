@@ -1,0 +1,12 @@
+<form role="form" class="bootbox-form" id="rolesForm" action="{{ path('msd_admin_user_manage_roles', {'userId': user.id}) }}" method="post">
+    <div class="container">
+        {% for role in roles %}
+            <div class="row">
+                <input type="hidden" name="role[{{ role.id }}]" value="0">
+                <label class="checkbox-inline">
+                    <input type="checkbox" name="role[{{ role.id }}]" value="1"{% if role.id in user.roleIds %} checked{% endif %}> {{ role.name|trans }}
+                </label>
+            </div>
+        {% endfor %}
+    </div>
+</form>

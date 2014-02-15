@@ -16,32 +16,32 @@
             <ul class="nav navbar-nav">
                 {% if connections.count > 1 %}
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans %}Connection{% endtrans %} <b class="caret"></b></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans %}Connection{% endtrans %} <span class="badge">{{ connections.count }}</span> <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         {% for connection in connections %}
                             <li{% if connection.id == currentConnection %} class="active"{% endif %}>
-                                <a href="{{ path(app.request.attributes.get('_route'), {'_connection': connection.id}) }}">{{ connection.host }}</a>
+                                <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge({'_connection': connection.id})) }}">{{ connection.host }}</a>
                             </li>
                         {% endfor %}
                     </ul>
                 </li>
                 {% endif %}
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans %}Databases{% endtrans %} <b class="caret"></b></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans %}Databases{% endtrans %} <span class="badge">{{ databases|length }}</span> <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         {% for database in databases %}
                             <li{% if database == currentDatabase %} class="active"{% endif %}>
-                                <a href="{{ path(app.request.attributes.get('_route'), {'_database': database}) }}">{{ database }}</a>
+                                <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge({'_database': database})) }}">{{ database }}</a>
                             </li>
                         {% endfor %}
                     </ul>
                 </li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans %}Tables{% endtrans %} <b class="caret"></b></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans %}Tables{% endtrans %} <span class="badge">{{ tables|length }}</span> <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         {% for table in tables %}
                             <li{% if table == currentTable %} class="active"{% endif %}>
-                                <a href="{{ path(app.request.attributes.get('_route'), {'_table': table}) }}">{{ table }}</a>
+                                <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge({'_table': table})) }}">{{ table }}</a>
                             </li>
                         {% endfor %}
                     </ul>
@@ -49,7 +49,7 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 {% if is_granted("ROLE_ADMIN") %}
-                <li><a href="#"><span class="glyphicon glyphicon-wrench"></span> {% trans %}Adminstration{% endtrans %}</a></li>
+                <li><a href="{{ path('msd_admin_homepage') }}"><span class="glyphicon glyphicon-wrench"></span> {% trans %}Adminstration{% endtrans %}</a></li>
                 {% endif %}
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> {{ app.user.username }} <b class="caret"></b></a>

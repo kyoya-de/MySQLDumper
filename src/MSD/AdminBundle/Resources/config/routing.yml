@@ -1,3 +1,27 @@
 msd_admin_homepage:
-    pattern:  /hello/{name}
+    pattern:  /
     defaults: { _controller: MSDAdminBundle:Default:index }
+
+msd_admin_user_edit:
+    pattern: /user/edit/{userId}
+    defaults: { _controller: MSDAdminBundle:User:edit }
+
+msd_admin_user_delete:
+    pattern: /user/delete/{userId}
+    defaults: { _controller: MSDAdminBundle:User:delete }
+
+msd_admin_user_lock:
+    pattern: /user/lock/{userId}
+    defaults: { _controller: MSDAdminBundle:User:lock }
+
+msd_admin_user_unlock:
+    pattern: /user/unlock/{userId}
+    defaults: { _controller: MSDAdminBundle:User:unlock }
+
+msd_admin_user_manage_connections:
+    pattern: /user/manageConnections/{userId}
+    defaults: { _controller: MSDAdminBundle:User:manageConnections }
+
+msd_admin_user_manage_roles:
+    pattern: /user/manageRoles/{userId}
+    defaults: { _controller: MSDAdminBundle:User:manageRoles }

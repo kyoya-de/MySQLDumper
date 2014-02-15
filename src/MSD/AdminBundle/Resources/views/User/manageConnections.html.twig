@@ -1,0 +1,25 @@
+<form role="form" class="bootbox-form" id="rolesForm" action="{{ path('msd_admin_user_manage_roles', {'userId': user.id}) }}" method="post">
+        <table class="table table-striped">
+            <tr>
+                <th>{% trans %}ID{% endtrans %}</th>
+                <th>{% trans %}Host{% endtrans %}</th>
+                <th>{% trans %}User{% endtrans %}</th>
+                <th>{% trans %}DB-Name{% endtrans %}</th>
+                <th>{% trans %}Action{% endtrans %}</th>
+            </tr>
+            {% for connection in connections %}
+                <tr>
+                    <td>{{ connection.id }}</td>
+                    <td>{{ connection.host }}{% if connection.port > 0 %}:{{ connection.port }}{% endif %}</td>
+                    <td>{{ connection.user }}</td>
+                    <td>{{ connection.dbName }}</td>
+                    <td>
+                        <button class="btn btn-default">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                            {% trans %}Edit{% endtrans %}
+                        </button>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+</form>
