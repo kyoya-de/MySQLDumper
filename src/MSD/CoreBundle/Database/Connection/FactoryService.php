@@ -12,8 +12,6 @@ use Doctrine\Common\Collections\Collection;
 
 use MSD\UserBundle\Entity\User;
 use MSD\UserBundle\Entity\UserDatabase;
-use MSD\CoreBundle\Database\Connection\NotFoundException;
-use MSD\CoreBundle\Doctrine\DBAL\Platforms\MySqlPlatform;
 
 /**
  * Class FactoryService
@@ -23,12 +21,9 @@ use MSD\CoreBundle\Doctrine\DBAL\Platforms\MySqlPlatform;
 class FactoryService
 {
     /**
-     * @var User
-     */
-    protected $user;
-
-    /**
      * @param Container $container
+     *
+     * @throws NotFoundException
      *
      * @return Connection
      */
@@ -64,47 +59,9 @@ class FactoryService
             throw new NotFoundException('Unknown connection ID!');
         }
 
-        $connection = array(
-            'driver' => $database->getDriver(),
-        );
+        $currentDbName = $session->get('database.current', $database->getDbName());
+        $connectionService = $container->get('msd.db_connection.service');
 
-        if ($database->getUser() != '') {
-            $connection['user'] = $database->getUser();
-        }
-
-        if ($database->getPassword() != '') {
-            $connection['password'] = $database->getPassword();
-        }
-
-        if ($database->getHost() != '') {
-            $connection['host'] = $database->getHost();
-        }
-
-        if ($database->getPort() > 0) {
-            $connection['port'] = $database->getPort();
-        }
-
-        if ($database->getDbName() != '') {
-            $connection['dbname'] = $session->get('database.current', $database->getDbName());
-        }
-        if ($database->getUnixSocket() != '') {
-            $connection['unix_socket'] = $database->getUnixSocket();
-        }
-
-        if ($database->getPath() != '') {
-            $connection['path'] = $database->getPath();
-        }
-
-        if ($database->getCharset() != '') {
-            $connection['charset'] = $database->getCharset();
-        }
-
-        if ($database->getDriverOptions()->count() > 0) {
-            $connection['driverOptions'] = $database->getDriverOptions()->toArray();
-        }
-
-        $connection['platform'] = new MySqlPlatform();
-
-        return DriverManager::getConnection($connection, new Configuration());
+        return $connectionService->createConnection($database, $currentDbName);
     }
-} 
+}

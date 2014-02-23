@@ -2,6 +2,7 @@ parameters:
 #    msd_core.example.class: MSD\CoreBundle\Example
     msd.db_connection.class: Doctrine\DBAL\Connection
     msd.db_connection.factory.class: MSD\CoreBundle\Database\Connection\FactoryService
+    msd.db_connection.service.class: MSD\CoreBundle\Database\ConnectionService
     msd.twig.menu_builder_extension.class: MSD\CoreBundle\Twig\Extension\MenuBuilder
 
 services:
@@ -13,6 +14,8 @@ services:
         factory_class: %msd.db_connection.factory.class%
         factory_method: getConnection
         arguments: [ @service_container ]
+    msd.db_connection.service:
+        class: %msd.db_connection.service.class%
     msd.twig.menu_builder_extension:
         class: %msd.twig.menu_builder_extension.class%
         arguments: [ @service_container ]

@@ -1,25 +1,38 @@
-<form role="form" class="bootbox-form" id="rolesForm" action="{{ path('msd_admin_user_manage_roles', {'userId': user.id}) }}" method="post">
-        <table class="table table-striped">
+{% if connections.count > 0 %}
+<form role="form" class="bootbox-form" id="rolesForm" action="{{ path('msd_admin_user_edit_connection', {'userId': user.id}) }}" method="post">
+    <table class="table table-striped">
+        <tr>
+            <th>{% trans %}ID{% endtrans %}</th>
+            <th>{% trans %}Host{% endtrans %}</th>
+            <th>{% trans %}User{% endtrans %}</th>
+            <th>{% trans %}DB-Name{% endtrans %}</th>
+            <th>{% trans %}Action{% endtrans %}</th>
+        </tr>
+        {% for connection in connections %}
             <tr>
-                <th>{% trans %}ID{% endtrans %}</th>
-                <th>{% trans %}Host{% endtrans %}</th>
-                <th>{% trans %}User{% endtrans %}</th>
-                <th>{% trans %}DB-Name{% endtrans %}</th>
-                <th>{% trans %}Action{% endtrans %}</th>
-            </tr>
-            {% for connection in connections %}
-                <tr>
-                    <td>{{ connection.id }}</td>
-                    <td>{{ connection.host }}{% if connection.port > 0 %}:{{ connection.port }}{% endif %}</td>
-                    <td>{{ connection.user }}</td>
-                    <td>{{ connection.dbName }}</td>
-                    <td>
-                        <button class="btn btn-default">
+                <td>{{ connection.id }}</td>
+                <td>{{ connection.host }}{% if connection.port > 0 %}:{{ connection.port }}{% endif %}</td>
+                <td>{{ connection.user }}</td>
+                <td>{{ connection.dbName }}</td>
+                <td>
+                    <div class="btn-group btn-group-sm">
+                        <button class="btn btn-default" name="connectionId" value="{{ connection.id }}">
                             <span class="glyphicon glyphicon-pencil"></span>
                             {% trans %}Edit{% endtrans %}
                         </button>
-                    </td>
-                </tr>
-            {% endfor %}
-        </table>
+                        <button class="btn btn-danger" type="button" onclick="confirmDeletion('{{ path('msd_admin_user_connection_delete', {'connectionId': connection.id }) }}', '{% trans %}You\'re about to delete the selected connection.{% endtrans %}');">
+                            <span class="glyphicon glyphicon-trash"></span>
+                            {% trans %}Delete{% endtrans %}
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
 </form>
+{% else %}
+    <div class="alert alert-info">
+        <b>{% trans %}No connection configured.{% endtrans %}</b><br>
+        {% trans %}Click the "New" button to create a new connection for this user.{% endtrans %}
+    </div>
+{% endif %}

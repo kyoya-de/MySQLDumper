@@ -16,7 +16,7 @@
 
 <body>
 
-{{ buildMenu() }}
+    {% block menu %}{% include 'MSDCoreBundle:Menu:layout.html.twig' %}{% endblock %}
     {% block content %}{% endblock %}
 </body>
 </html>

@@ -5,3 +5,7 @@ services:
 #    msd_admin.example:
 #        class: %msd_admin.example.class%
 #        arguments: [@service_id, "plain_value", %parameter%]
+    msd_admin.form.type.msd_db_connection:
+        class: "MSD\AdminBundle\Form\Connection\Type"
+        tags:
+            - { name: form.type, alias: msd_db_connection }

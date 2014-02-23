@@ -346,6 +346,18 @@ class User implements AdvancedUserInterface, \Serializable
     }
 
     /**
+     * Removes all roles from the user.
+     *
+     * @return User
+     */
+    public function clearRoles()
+    {
+        $this->roles->clear();
+
+        return $this;
+    }
+
+    /**
      * (PHP 5 &gt;= 5.1.0)<br/>
      * String representation of object
      *
@@ -395,6 +407,18 @@ class User implements AdvancedUserInterface, \Serializable
     public function removeDatabase(UserDatabase $databases)
     {
         $this->databases->removeElement($databases);
+    }
+
+    /**
+     * Removes all database connections from the user.
+     *
+     * @return $this
+     */
+    public function clearDatabases()
+    {
+        $this->databases->clear();
+
+        return $this;
     }
 
     /**

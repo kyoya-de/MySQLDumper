@@ -47,7 +47,7 @@ assetic:
         main_stylesheets:
             inputs:
                 - '@MSDCoreBundle/Resources/public/css/bootstrap.css'
-                - '@MSDCoreBundle/Resources/public/css/bootstrap-theme.css'
+#                - '@MSDCoreBundle/Resources/public/css/bootstrap-theme.css'
 
 # Doctrine Configuration
 doctrine:

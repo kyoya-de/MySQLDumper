@@ -4,6 +4,7 @@ namespace MSD\UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * UserDatabase
@@ -26,64 +27,66 @@ class UserDatabase
      * @var string
      *
      * @ORM\Column(name="driver", type="string", length=32)
+     * @Assert\NotNull
      */
-    private $driver;
+    private $driver = 'pdo_mysql';
 
     /**
      * @var string
      *
      * @ORM\Column(name="user", type="string", length=255)
      */
-    private $user;
+    private $user = '';
 
     /**
      * @var string
      *
      * @ORM\Column(name="password", type="string", length=255)
      */
-    private $password;
+    private $password = '';
 
     /**
      * @var string
      *
      * @ORM\Column(name="host", type="string", length=255)
      */
-    private $host;
+    private $host = '';
 
     /**
      * @var integer
      *
      * @ORM\Column(name="port", type="smallint")
+     * @Assert\Range(min=0, max=65535)
      */
-    private $port;
+    private $port = 0;
 
     /**
      * @var string
      *
      * @ORM\Column(name="unixSocket", type="string", length=255)
      */
-    private $unixSocket;
+    private $unixSocket = '';
 
     /**
      * @var string
      *
      * @ORM\Column(name="dbName", type="string", length=255)
      */
-    private $dbName;
+    private $dbName = '';
 
     /**
      * @var string
      *
      * @ORM\Column(name="charset", type="string", length=255)
      */
-    private $charset;
+    private $charset = '';
 
     /**
      * @var string
      *
      * @ORM\Column(name="path", type="text")
      */
-    private $path;
+    private $path = '';
 
     /**
      * @var DriverOption[]|ArrayCollection
@@ -122,7 +125,7 @@ class UserDatabase
      */
     public function setDriver($driver)
     {
-        $this->driver = $driver;
+        $this->driver = (string) $driver;
     
         return $this;
     }
@@ -145,7 +148,7 @@ class UserDatabase
      */
     public function setUser($user)
     {
-        $this->user = $user;
+        $this->user = (string) $user;
     
         return $this;
     }
@@ -168,7 +171,7 @@ class UserDatabase
      */
     public function setPassword($password)
     {
-        $this->password = $password;
+        $this->password = (string) $password;
     
         return $this;
     }
@@ -191,7 +194,7 @@ class UserDatabase
      */
     public function setHost($host)
     {
-        $this->host = $host;
+        $this->host = (string) $host;
     
         return $this;
     }
@@ -214,7 +217,7 @@ class UserDatabase
      */
     public function setPort($port)
     {
-        $this->port = $port;
+        $this->port = (int) $port;
     
         return $this;
     }
@@ -237,7 +240,7 @@ class UserDatabase
      */
     public function setUnixSocket($unixSocket)
     {
-        $this->unixSocket = $unixSocket;
+        $this->unixSocket = (string) $unixSocket;
     
         return $this;
     }
@@ -260,7 +263,7 @@ class UserDatabase
      */
     public function setDbName($dbName)
     {
-        $this->dbName = $dbName;
+        $this->dbName = (string) $dbName;
     
         return $this;
     }
@@ -283,7 +286,7 @@ class UserDatabase
      */
     public function setCharset($charset)
     {
-        $this->charset = $charset;
+        $this->charset = (string) $charset;
     
         return $this;
     }
@@ -306,7 +309,7 @@ class UserDatabase
      */
     public function setPath($path)
     {
-        $this->path = $path;
+        $this->path = (string) $path;
     
         return $this;
     }
@@ -347,10 +350,10 @@ class UserDatabase
     /**
      * Add driverOptions
      *
-     * @param \MSD\UserBundle\Entity\DriverOption $driverOptions
+     * @param DriverOption $driverOptions
      * @return UserDatabase
      */
-    public function addDriverOption(\MSD\UserBundle\Entity\DriverOption $driverOptions)
+    public function addDriverOption(DriverOption $driverOptions)
     {
         $this->driverOptions[] = $driverOptions;
     
@@ -360,9 +363,9 @@ class UserDatabase
     /**
      * Remove driverOptions
      *
-     * @param \MSD\UserBundle\Entity\DriverOption $driverOptions
+     * @param DriverOption $driverOptions
      */
-    public function removeDriverOption(\MSD\UserBundle\Entity\DriverOption $driverOptions)
+    public function removeDriverOption(DriverOption $driverOptions)
     {
         $this->driverOptions->removeElement($driverOptions);
     }

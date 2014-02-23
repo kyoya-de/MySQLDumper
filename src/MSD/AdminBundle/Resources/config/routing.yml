@@ -4,7 +4,7 @@ msd_admin_homepage:
 
 msd_admin_user_edit:
     pattern: /user/edit/{userId}
-    defaults: { _controller: MSDAdminBundle:User:edit }
+    defaults: { _controller: MSDAdminBundle:User:edit, userId: 0 }
 
 msd_admin_user_delete:
     pattern: /user/delete/{userId}
@@ -19,9 +19,21 @@ msd_admin_user_unlock:
     defaults: { _controller: MSDAdminBundle:User:unlock }
 
 msd_admin_user_manage_connections:
-    pattern: /user/manageConnections/{userId}
+    pattern: /user/connection/manage/{userId}
     defaults: { _controller: MSDAdminBundle:User:manageConnections }
 
 msd_admin_user_manage_roles:
-    pattern: /user/manageRoles/{userId}
+    pattern: /user/roles/edit/{userId}
     defaults: { _controller: MSDAdminBundle:User:manageRoles }
+
+msd_admin_user_edit_connection:
+    pattern: /user/connection/edit/{userId}
+    defaults: { _controller: MSDAdminBundle:User:editConnection }
+
+msd_admin_user_connection_check:
+    pattern: /user/connection/check
+    defaults: { _controller: MSDAdminBundle:User:checkConnection }
+
+msd_admin_user_connection_delete:
+    pattern: /user/connection/delete
+    defaults: { _controller: MSDAdminBundle:User:deleteConnection }

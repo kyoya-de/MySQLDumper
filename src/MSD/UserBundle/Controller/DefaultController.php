@@ -19,11 +19,7 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        /** @var User $user */
-        $user = $this->get('security.context')->getToken()->getUser();
-//        $u = new UserType();
-        $form = $this->createForm('msd_user', $user);
-        return $this->render('MSDUserBundle:Default:index.html.twig', array('form' => $form->createView()));
+        return $this->render('MSDUserBundle:Default:index.html.twig');
     }
 
     /**
