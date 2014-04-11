@@ -1,3 +1,7 @@
+msd_sql_browser:
+    resource: "@MSDSqlBrowserBundle/Resources/config/routing.yml"
+    prefix:   /
+
 msd_admin:
     resource: "@MSDAdminBundle/Resources/config/routing.yml"
     prefix:   /admin

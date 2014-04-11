@@ -1,0 +1,8 @@
+{% extends "MSDCoreBundle::layout.html.twig" %}
+{% block content %}
+    <h3>Hello {{ name }}!</h3>
+    {{ formatField("2014-04-11 13:33:42", "DATE") }}<br>
+    {{ formatField("2014-04-11 13:33:42", "TIME") }}<br>
+    {{ formatField("2014-04-11 13:33:42", "DATETIME") }}<br>
+    {{ formatField("2014-04-11 13:33:42", "TIMESTAMP") }}<br>
+{% endblock %}

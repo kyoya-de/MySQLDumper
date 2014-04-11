@@ -19,6 +19,7 @@ class AppKernel extends Kernel
             new MSD\UserBundle\MSDUserBundle(),
             new MSD\CoreBundle\MSDCoreBundle(),
             new MSD\AdminBundle\MSDAdminBundle(),
+            new MSD\Sql\BrowserBundle\MSDSqlBrowserBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

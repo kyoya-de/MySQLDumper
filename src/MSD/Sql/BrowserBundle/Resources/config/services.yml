@@ -1,0 +1,18 @@
+parameters:
+#    msd_sql_browser.example.class: MSD\Sql\BrowserBundle\Example
+
+services:
+#    msd_sql_browser.example:
+#        class: %msd_sql_browser.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]
+    msd.sql_browser.formatter.data_types:
+        class: MSD\Sql\BrowserBundle\Formatter\DataTypes
+    msd.sql_browser.formatter.sql_date:
+        class: MSD\Sql\BrowserBundle\Formatter\SqlDateFormatter
+        tags:
+            - { name: msd.sql_browser.formatter.data_type, dataTypes: "DATE, TIME, DATETIME, TIMESTAMP" }
+    msd.sql_browser.formatter.twig_extension:
+        class: MSD\Sql\BrowserBundle\Twig\Extension\DataTypeFormatter
+        arguments: [ @msd.sql_browser.formatter.data_types ]
+        tags:
+            - { name: twig.extension }
