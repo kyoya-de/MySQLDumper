@@ -2,7 +2,6 @@
 
 namespace MSD\Sql\BrowserBundle\Formatter;
 
-
 class DataTypes
 {
     /**
@@ -14,8 +13,9 @@ class DataTypes
     {
         $suitableDataTypes = explode(',', $suitableDataTypes);
         foreach ($suitableDataTypes as $suitableDataType) {
-            $suitableDataType = trim($suitableDataType);
-            $this->formatter[strtolower($suitableDataType)] = $formatter;
+            $suitableDataType             = trim($suitableDataType);
+            $dataTypeId                   = strtolower($suitableDataType);
+            $this->formatter[$dataTypeId] = $formatter;
         }
     }
 

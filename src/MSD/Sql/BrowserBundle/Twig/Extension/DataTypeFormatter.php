@@ -8,7 +8,6 @@
 
 namespace MSD\Sql\BrowserBundle\Twig\Extension;
 
-
 use MSD\Sql\BrowserBundle\Formatter\DataTypes;
 use Twig_Extension;
 
@@ -27,19 +26,12 @@ class DataTypeFormatter extends Twig_Extension
     public function getFunctions()
     {
         return array(
-            new \Twig_SimpleFunction('formatField', array($this, 'formatField'), array('is_safe' => array('html'))),
+            new \Twig_SimpleFunction(
+                'formatField',
+                array($this->dataTypeFormatter, 'formatField'),
+                array('is_safe' => array('html'))
+            ),
         );
-    }
-
-    /**
-     * @param mixed $fieldData
-     * @param string $dataType
-     *
-     * @return string
-     */
-    public function formatField($fieldData, $dataType)
-    {
-        return $this->dataTypeFormatter->formatField($fieldData, $dataType);
     }
 
     /**

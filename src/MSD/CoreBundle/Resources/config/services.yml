@@ -39,3 +39,10 @@ services:
             - { name: kernel.event_listener, event: kernel.request, method: changeTable }
         calls:
             - [setContainer, ["@service_container"]]
+
+    msd.metadata.schemata:
+        class: MSD\CoreBundle\Database\Metadata\Schemata
+        arguments: [@service_container]
+    msd.metadata.tables:
+        class: MSD\CoreBundle\Database\Metadata\Tables
+        arguments: [@service_container]

@@ -6,8 +6,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class DefaultController extends Controller
 {
-    public function indexAction($name)
+    public function indexAction()
     {
-        return $this->render('MSDSqlBrowserBundle:Default:index.html.twig', array('name' => $name));
+        $schemata = $this->get('msd.metadata.schemata');
+        $databases = $schemata->getSchemata();
+        return $this->render(
+            'MSDSqlBrowserBundle:Default:index.html.twig',
+            array('databases' => $databases)
+        );
     }
 }

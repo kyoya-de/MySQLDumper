@@ -11,6 +11,10 @@ services:
         class: MSD\Sql\BrowserBundle\Formatter\SqlDateFormatter
         tags:
             - { name: msd.sql_browser.formatter.data_type, dataTypes: "DATE, TIME, DATETIME, TIMESTAMP" }
+    msd.sql_browser.formatter.integer:
+        class: MSD\Sql\BrowserBundle\Formatter\IntegerFormatter
+        tags:
+            - { name: msd.sql_browser.formatter.data_type, dataTypes: "TINYINT,SMALLINT,MEDIUMINT,INT,BIGINT" }
     msd.sql_browser.formatter.twig_extension:
         class: MSD\Sql\BrowserBundle\Twig\Extension\DataTypeFormatter
         arguments: [ @msd.sql_browser.formatter.data_types ]

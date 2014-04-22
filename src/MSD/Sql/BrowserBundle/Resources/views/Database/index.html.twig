@@ -1,0 +1,47 @@
+{% extends "MSDCoreBundle::layout.html.twig" %}
+{% block content %}
+    <table class="table table-striped">
+        <tr>
+            <th>{% trans %}sql_browser.column_header.table_name{% endtrans %}</th>
+            <th>{% trans %}sql_browser.column_header.table_engine{% endtrans %}</th>
+            <th>{% trans %}sql_browser.column_header.table_version{% endtrans %}</th>
+            <th>{% trans %}sql_browser.column_header.table_row_format{% endtrans %}</th>
+            <th>{% trans %}sql_browser.column_header.table_rows{% endtrans %}</th>
+            <th>{% trans %}sql_browser.column_header.table_avg_row_length{% endtrans %}</th>
+            <th>{% trans %}sql_browser.column_header.table_data_length{% endtrans %}</th>
+            <th>{% trans %}sql_browser.column_header.table_max_data_length{% endtrans %}</th>
+            <th>{% trans %}sql_browser.column_header.table_index_length{% endtrans %}</th>
+            <th>{% trans %}sql_browser.column_header.table_data_free{% endtrans %}</th>
+            <th>{% trans %}sql_browser.column_header.table_auto_increment{% endtrans %}</th>
+            <th>{% trans %}sql_browser.column_header.table_create_time{% endtrans %}</th>
+            <th>{% trans %}sql_browser.column_header.table_update_time{% endtrans %}</th>
+            <th>{% trans %}sql_browser.column_header.table_check_time{% endtrans %}</th>
+            <th>{% trans %}sql_browser.column_header.table_collation{% endtrans %}</th>
+            <th>{% trans %}sql_browser.column_header.table_checksum{% endtrans %}</th>
+            <th>{% trans %}sql_browser.column_header.table_create_options{% endtrans %}</th>
+            <th>{% trans %}sql_browser.column_header.table_comment{% endtrans %}</th>
+        </tr>
+        {% for table in tables %}
+            <tr>
+                <td>{{ formatField(table.name, 'VARCHAR') }}</td>
+                <td>{{ formatField(table.engine, 'VARCHAR') }}</td>
+                <td>{{ formatField(table.version, 'INT') }}</td>
+                <td>{{ formatField(table.rowFormat, 'VARCHAR') }}</td>
+                <td>{{ formatField(table.rows, 'INT') }}</td>
+                <td>{{ formatField(table.averageRowLength, 'INT') }}</td>
+                <td>{{ formatField(table.dataLength, 'INT') }}</td>
+                <td>{{ formatField(table.maxDataLength, 'INT') }}</td>
+                <td>{{ formatField(table.indexLength, 'INT') }}</td>
+                <td>{{ formatField(table.dataFree, 'INT') }}</td>
+                <td>{{ formatField(table.autoIncrement, 'INT') }}</td>
+                <td>{{ formatField(table.createTime, 'TIMESTAMP') }}</td>
+                <td>{{ formatField(table.updateTime, 'TIMESTAMP') }}</td>
+                <td>{{ formatField(table.checkTime, 'TIMESTAMP') }}</td>
+                <td>{{ formatField(table.collation, 'VARCHAR') }}</td>
+                <td>{{ formatField(table.checksum, 'VARCHAR') }}</td>
+                <td>{{ formatField(table.createOptions, 'VARCHAR') }}</td>
+                <td>{{ formatField(table.comment, 'TEXT') }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

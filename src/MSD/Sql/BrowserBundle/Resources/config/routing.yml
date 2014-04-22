@@ -1,3 +1,6 @@
 msd_sql_browser_homepage:
-    pattern:  /hello/{name}
+    pattern:  /
     defaults: { _controller: MSDSqlBrowserBundle:Default:index }
+msd_sql_browser_db_overview:
+    pattern: /database/{dbName}
+    defaults: { _controller: MSDSqlBrowserBundle:Database:index }
